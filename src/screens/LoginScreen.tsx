@@ -1,11 +1,14 @@
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Icon } from '@rneui/themed';
 
-function LoginField(lf_props:any) {
+function LoginField(lf_props: any) {
 
     const stack = lf_props.lf_stack;
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     return (
         <View>
@@ -14,7 +17,7 @@ function LoginField(lf_props:any) {
                 borderRadius: 20, marginHorizontal: 20,
                 justifyContent: 'center', paddingLeft: 20, marginTop: 140
             }}>
-                <TextInput placeholder="Email" placeholderTextColor="#000" />
+                <TextInput placeholder="Email" placeholderTextColor="#000" onChangeText={(v) => setEmail(v)} style={{color:'black'}}/>
             </View>
 
             <View style={{
@@ -22,15 +25,30 @@ function LoginField(lf_props:any) {
                 borderRadius: 20, marginHorizontal: 20,
                 justifyContent: 'center', paddingLeft: 20, marginTop: 10
             }}>
-                <TextInput placeholder="Password" placeholderTextColor="#000" />
+                <TextInput placeholder="Password" placeholderTextColor="#000" onChangeText={(v) => setPassword(v)} style={{color:'black'}} secureTextEntry={true} />
             </View>
-            <SigninButton />
+            <SigninButton email={email} password={password} Sb_stack={stack} />
             <BottomSection bs_stack={stack} />
         </View>
     );
 }
 
-function SigninButton() {
+function SigninButton(sb_props: any) {
+
+    const u_email = sb_props.email;
+    const u_password = sb_props.password;
+
+    const email = 'abc@gmail.com';
+    const password = '123';
+
+    function gotoHome() {
+        if (u_email == email && u_password == password) {
+            sb_props.Sb_stack.navigate('Home');
+        } else {
+            Alert.alert('Message', 'Invalid Credentials');
+        }
+    }
+
     return (
         <View style={{ flexDirection: 'row', marginTop: 20 }}>
             <View style={{
@@ -39,22 +57,25 @@ function SigninButton() {
             }}>
                 <Text style={{ color: '#000', fontSize: 25, marginLeft: 28, fontWeight: '900' }}>Sign In</Text>
             </View>
-            <View style={{
-                height: 70, flex: 1, justifyContent: 'center',
-                alignItems: 'flex-end'
-            }}>
+
+            <TouchableOpacity activeOpacity={0.7} onPress={gotoHome}>
                 <View style={{
-                    width: 50, height: 50, backgroundColor: '#327cf3', marginRight: 40,
-                    borderRadius: 100, justifyContent: 'center', alignItems: 'center'
+                    height: 70, flex: 1, justifyContent: 'center',
+                    alignItems: 'flex-end'
                 }}>
-                    <Icon size={40} color='#fff' name='arrow-forward' type='ionicon' />
+                    <View style={{
+                        width: 50, height: 50, backgroundColor: '#327cf3', marginRight: 40,
+                        borderRadius: 100, justifyContent: 'center', alignItems: 'center'
+                    }}>
+                        <Icon size={40} color='#fff' name='arrow-forward' type='ionicon' />
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }
 
-function BottomSection(bs_props:any) {
+function BottomSection(bs_props: any) {
 
     const stack = bs_props.bs_stack;
 
@@ -85,10 +106,10 @@ function BottomSection(bs_props:any) {
     );
 }
 
-const LoginScreen = (ls_props:any) => {
-    
+const LoginScreen = (ls_props: any) => {
+
     const stack = ls_props.navigation;
-    
+
     return (
         <View style={sty.container}>
             <Image
