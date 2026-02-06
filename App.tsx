@@ -1,17 +1,28 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import LoginScreen from './src/screens/LoginScreen';
-import SignupScreen from './src/screens/SignupScreen';
 import AppNavigation from './src/navigations/AppNavigation';
 import 'react-native-gesture-handler';
+import { PaperProvider, MD3LightTheme as DefaultTheme } from 'react-native-paper';
 
 function App() {
+
+  const theme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: 'orange',
+      secondary: 'yellow',
+    },
+  };
+
   return (
-    <View style={sty.container}>
-      <AppNavigation />
-      {/* <LoginScreen /> */}
-      {/* <SignupScreen /> */}
-    </View>
+    <PaperProvider theme={theme}>
+      <View style={sty.container}>
+        <AppNavigation />
+        {/* <LoginScreen /> */}
+        {/* <SignupScreen /> */}
+      </View>
+    </PaperProvider>
   );
 }
 

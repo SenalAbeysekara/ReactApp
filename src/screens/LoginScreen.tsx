@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Icon } from '@rneui/themed';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseinit';
+import { ActivityIndicator } from 'react-native-paper';
 
 function LoginField(lf_props: any) {
 
@@ -15,19 +16,19 @@ function LoginField(lf_props: any) {
     return (
         <View>
             <View style={{
-                height: 70, backgroundColor: '#fff',
+                height: 55, backgroundColor: '#fff',
                 borderRadius: 20, marginHorizontal: 20,
-                justifyContent: 'center', paddingLeft: 20, marginTop: 140
+                justifyContent: 'center', paddingLeft: 20, marginTop: 120
             }}>
-                <TextInput placeholder="Email" placeholderTextColor="#000" onChangeText={(v) => setEmail(v)} style={{ color: 'black' }} />
+                <TextInput placeholder="Email" placeholderTextColor="#000" style={{ color: 'black', fontFamily: 'Poppins-Medium' }} onChangeText={(v) => setEmail(v)} />
             </View>
 
             <View style={{
-                height: 70, backgroundColor: '#fff',
+                height: 55, backgroundColor: '#fff',
                 borderRadius: 20, marginHorizontal: 20,
                 justifyContent: 'center', paddingLeft: 20, marginTop: 10
             }}>
-                <TextInput placeholder="Password" placeholderTextColor="#000" onChangeText={(v) => setPassword(v)} style={{ color: 'black' }} secureTextEntry={true} />
+                <TextInput placeholder="Password" placeholderTextColor="#000" style={{ color: 'black', fontFamily: 'Poppins-Medium' }} onChangeText={(v) => setPassword(v)} secureTextEntry={true} />
             </View>
             <SigninButton email={email} password={password} Sb_stack={stack} />
             <BottomSection bs_stack={stack} />
@@ -39,20 +40,30 @@ function SigninButton(sb_props: any) {
 
     const u_email = sb_props.email;
     const u_password = sb_props.password;
+    const [Logging, setLogging] = useState(false);
 
     function getUser() {
         getDocs(query(collection(db, 'Users'), where('email', '==', u_email.toLowerCase()))).then(ds => {
+            setLogging(false);
             if (ds.size == 1) {
                 const user = ds.docs[0].data();
                 if (user.password == u_password) {
                     sb_props.Sb_stack.navigate('Home');
                 } else {
-                    Alert.alert('Message', 'Invalid Password');
+                    Alert.alert('Error', 'Invalid Password');
                 }
             } else {
                 Alert.alert('Message', 'Invalid Email');
             }
-        })
+        }).catch(err => {
+            setLogging(false);
+            Alert.alert('Error', 'Something went wrong');
+        });
+    }
+
+    function goToHome() {
+        setLogging(true);
+        getUser();
     }
 
     return (
@@ -61,22 +72,25 @@ function SigninButton(sb_props: any) {
                 height: 70, flex: 1,
                 justifyContent: 'center'
             }}>
-                <Text style={{ color: '#000', fontSize: 25, marginLeft: 28, fontWeight: '900' }}>Sign In</Text>
+                <Text style={{ color: 'white', fontSize: 25, marginLeft: 28, fontFamily: 'Poppins-Medium' }}>Sign In</Text>
             </View>
-
-            <TouchableOpacity activeOpacity={0.7} onPress={getUser}>
-                <View style={{
-                    height: 70, flex: 1, justifyContent: 'center',
-                    alignItems: 'flex-end'
-                }}>
+            <View style={{
+                height: 70, flex: 1, justifyContent: 'center',
+                alignItems: 'flex-end'
+            }}>
+                <TouchableOpacity activeOpacity={0.7} onPress={goToHome}>
                     <View style={{
-                        width: 50, height: 50, backgroundColor: '#327cf3', marginRight: 40,
+                        width: 45, height: 45, backgroundColor: '#327cf3', marginRight: 30,
                         borderRadius: 100, justifyContent: 'center', alignItems: 'center'
                     }}>
-                        <Icon size={40} color='#fff' name='arrow-forward' type='ionicon' />
+                        {
+                            (Logging) ? <ActivityIndicator size={30} color='#fff' />
+                                :
+                                <Icon size={35} color='#fff' name='arrow-forward' type='ionicon' />
+                        }
                     </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -90,24 +104,26 @@ function BottomSection(bs_props: any) {
     }
 
     return (
-        <View style={{ flexDirection: 'row', marginTop: 110, gap: 100, marginHorizontal: 16 }}>
-
-            <TouchableOpacity onPress={gotoSignup}>
-                <View style={{
-                    height: 40, width: 95, backgroundColor: '#000',
-                    justifyContent: 'center', borderRadius: 20, alignItems: 'center'
-                }}>
-                    <Text style={{ color: '#fff', fontSize: 13, fontWeight: '700' }}>Sign Up</Text>
-                </View>
+        <View
+            style={{
+                flexDirection: 'row',
+                marginTop: 145,
+                marginHorizontal: 30,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+            }}
+        >
+            <TouchableOpacity activeOpacity={0.7} onPress={gotoSignup}>
+                <Text style={{ color: 'white', fontSize: 15, fontFamily: 'Poppins-Medium' }}>
+                    Sign Up
+                </Text>
             </TouchableOpacity>
 
-            <View style={{
-                height: 40, width: 150, backgroundColor: '#000',
-                justifyContent: 'center', alignItems: 'center', borderRadius: 20
-            }}>
-                <Text style={{ color: '#fff', fontSize: 13, fontWeight: '700' }}>Forgot Password</Text>
-            </View>
-
+            <TouchableOpacity activeOpacity={0.7} >
+                <Text style={{ color: 'white', fontSize: 15, fontFamily: 'Poppins-Medium' }}>
+                    Forgot Password
+                </Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -120,14 +136,15 @@ const LoginScreen = (ls_props: any) => {
         <View style={sty.container}>
             <Image
                 style={{ width: '100%', height: '100%', position: 'absolute' }}
-                source={require('../../assets/img/bg.png')}
+                source={require('../../assets/img/bg1.png')}
                 resizeMode='cover' />
 
             <Text style={{
                 fontSize: 45, color: '#fff', fontWeight: '600',
-                marginTop: 100, marginLeft: 20
+                marginTop: 90, marginLeft: 20, textAlign: 'center',
+                fontFamily: "Lobster-Regular",
             }}>
-                {`Welcome\nBack`}
+                {`Welcome To\nPizza Mania`}
             </Text>
             <KeyboardAwareScrollView keyboardShouldPersistTaps='never'>
                 <LoginField lf_stack={stack} />

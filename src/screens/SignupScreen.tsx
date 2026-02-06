@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Icon } from '@rneui/themed';
@@ -7,27 +7,27 @@ function SignupField() {
     return (
         <View>
             <View style={{
-                height: 70, backgroundColor: '#fff',
+                height: 55, backgroundColor: '#fff',
                 borderRadius: 20, marginHorizontal: 20,
-                justifyContent: 'center', paddingLeft: 20, marginTop: 90
+                justifyContent: 'center', paddingLeft: 20, marginTop: 110
             }}>
-                <TextInput placeholder="Name" placeholderTextColor="#000" />
+                <TextInput placeholder="Name" placeholderTextColor="#000" style={{ color: 'black', fontFamily: 'Poppins-Medium' }} />
             </View>
 
             <View style={{
-                height: 70, backgroundColor: '#fff',
+                height: 55, backgroundColor: '#fff',
                 borderRadius: 20, marginHorizontal: 20,
                 justifyContent: 'center', paddingLeft: 20, marginTop: 10
             }}>
-                <TextInput placeholder="Your Email" placeholderTextColor="#000" />
+                <TextInput placeholder="Your Email" placeholderTextColor="#000" style={{ color: 'black', fontFamily: 'Poppins-Medium' }} />
             </View>
 
             <View style={{
-                height: 70, backgroundColor: '#fff',
+                height: 55, backgroundColor: '#fff',
                 borderRadius: 20, marginHorizontal: 20,
                 justifyContent: 'center', paddingLeft: 20, marginTop: 10
             }}>
-                <TextInput placeholder="Password" placeholderTextColor="#000" />
+                <TextInput placeholder="Password" placeholderTextColor="#000" style={{ color: 'black', fontFamily: 'Poppins-Medium' }} secureTextEntry={true} />
             </View>
             <SignupButton />
             <BottomSection />
@@ -42,18 +42,20 @@ function SignupButton() {
                 height: 70, flex: 1,
                 justifyContent: 'center'
             }}>
-                <Text style={{ color: '#000', fontSize: 25, marginLeft: 28, fontWeight: '900' }}>Sign Up</Text>
+                <Text style={{ color: 'white', fontSize: 25, marginLeft: 28, fontFamily: 'Poppins-Medium' }}>Sign Up</Text>
             </View>
             <View style={{
                 height: 70, flex: 1, justifyContent: 'center',
                 alignItems: 'flex-end'
             }}>
-                <View style={{
-                    width: 50, height: 50, backgroundColor: '#327cf3', marginRight: 40,
-                    borderRadius: 100, justifyContent: 'center', alignItems: 'center'
-                }}>
-                    <Icon size={40} color='#fff' name='arrow-forward' type='ionicon' />
-                </View>
+                <TouchableOpacity activeOpacity={0.7}>
+                    <View style={{
+                        width: 45, height: 45, backgroundColor: '#327cf3', marginRight: 30,
+                        borderRadius: 100, justifyContent: 'center', alignItems: 'center'
+                    }}>
+                        <Icon size={35} color='#fff' name='arrow-forward' type='ionicon' />
+                    </View>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -61,16 +63,11 @@ function SignupButton() {
 
 function BottomSection() {
     return (
-        <View style={{ flexDirection: 'row', marginTop: 80, gap: 100, marginHorizontal: 16,justifyContent: 'flex-end' }}>
-            
-            <View style={{
-                height: 40, width: 95, backgroundColor: '#000',
-                justifyContent: 'center', alignItems: 'center', borderRadius: 20
-            }}>
-                <Text style={{ color: '#fff', fontSize: 13, fontWeight: '700' }}>Sign In</Text>
+        <TouchableOpacity activeOpacity={0.7} >
+            <View style={{ flexDirection: 'row', marginTop: 145, justifyContent: 'flex-end', marginRight: 30 }}>
+                <Text style={{ color: 'white', fontSize: 15, fontFamily: 'Poppins-Medium' }}>Sign In</Text>
             </View>
-
-        </View>
+        </TouchableOpacity>
     );
 }
 
@@ -79,14 +76,15 @@ const SignupScreen = () => {
         <View style={sty.container}>
             <Image
                 style={{ width: '100%', height: '100%', position: 'absolute' }}
-                source={require('../../assets/img/bg.png')}
+                source={require('../../assets/img/bg1.png')}
                 resizeMode='cover' />
 
             <Text style={{
                 fontSize: 45, color: '#fff', fontWeight: '600',
-                marginTop: 100, marginLeft: 20
+                marginTop: 100, marginLeft: 20, textAlign: 'center',
+                fontFamily: "Lobster-Regular",
             }}>
-                {`Create\nAccount`}
+                {`Create Account`}
             </Text>
             <KeyboardAwareScrollView keyboardShouldPersistTaps='never'>
                 <SignupField />
