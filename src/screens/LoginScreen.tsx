@@ -2,6 +2,8 @@ import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } fro
 import React, { useState } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Icon } from '@rneui/themed';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../../firebase/firebaseinit';
 
 function LoginField(lf_props: any) {
 
@@ -17,7 +19,7 @@ function LoginField(lf_props: any) {
                 borderRadius: 20, marginHorizontal: 20,
                 justifyContent: 'center', paddingLeft: 20, marginTop: 140
             }}>
-                <TextInput placeholder="Email" placeholderTextColor="#000" onChangeText={(v) => setEmail(v)} style={{color:'black'}}/>
+                <TextInput placeholder="Email" placeholderTextColor="#000" onChangeText={(v) => setEmail(v)} style={{ color: 'black' }} />
             </View>
 
             <View style={{
@@ -25,7 +27,7 @@ function LoginField(lf_props: any) {
                 borderRadius: 20, marginHorizontal: 20,
                 justifyContent: 'center', paddingLeft: 20, marginTop: 10
             }}>
-                <TextInput placeholder="Password" placeholderTextColor="#000" onChangeText={(v) => setPassword(v)} style={{color:'black'}} secureTextEntry={true} />
+                <TextInput placeholder="Password" placeholderTextColor="#000" onChangeText={(v) => setPassword(v)} style={{ color: 'black' }} secureTextEntry={true} />
             </View>
             <SigninButton email={email} password={password} Sb_stack={stack} />
             <BottomSection bs_stack={stack} />
@@ -38,15 +40,19 @@ function SigninButton(sb_props: any) {
     const u_email = sb_props.email;
     const u_password = sb_props.password;
 
-    const email = 'abc@gmail.com';
-    const password = '123';
-
-    function gotoHome() {
-        if (u_email == email && u_password == password) {
-            sb_props.Sb_stack.navigate('Home');
-        } else {
-            Alert.alert('Message', 'Invalid Credentials');
-        }
+    function getUser() {
+        getDocs(query(collection(db, 'Users'), where('email', '==', u_email.toLowerCase()))).then(ds => {
+            if (ds.size == 1) {
+                const user = ds.docs[0].data();
+                if (user.password == u_password) {
+                    sb_props.Sb_stack.navigate('Home');
+                } else {
+                    Alert.alert('Message', 'Invalid Password');
+                }
+            } else {
+                Alert.alert('Message', 'Invalid Email');
+            }
+        })
     }
 
     return (
@@ -58,7 +64,7 @@ function SigninButton(sb_props: any) {
                 <Text style={{ color: '#000', fontSize: 25, marginLeft: 28, fontWeight: '900' }}>Sign In</Text>
             </View>
 
-            <TouchableOpacity activeOpacity={0.7} onPress={gotoHome}>
+            <TouchableOpacity activeOpacity={0.7} onPress={getUser}>
                 <View style={{
                     height: 70, flex: 1, justifyContent: 'center',
                     alignItems: 'flex-end'
