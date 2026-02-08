@@ -56,7 +56,7 @@ function SignupField() {
                 borderRadius: 20, marginHorizontal: 20,
                 justifyContent: 'center', paddingLeft: 20, marginTop: 10
             }}>
-                <TextInput onChangeText={(v) => setPassword(v)} placeholder="Password" secureTextEntry={true} placeholderTextColor="#aaa" style={{ color: 'black', fontFamily: 'Poppins-Medium' }} secureTextEntry={true} />
+                <TextInput onChangeText={(v) => setPassword(v)} placeholder="Password" placeholderTextColor="#aaa" style={{ color: 'black', fontFamily: 'Poppins-Medium' }} secureTextEntry={true} />
             </View>
             <SignupButton saveUser={saveUser} saving={Saving} />
             <BottomSection />

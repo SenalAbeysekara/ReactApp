@@ -1,10 +1,11 @@
 import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Icon } from '@rneui/themed';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseinit';
 import { ActivityIndicator } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function LoginField(lf_props: any) {
 
@@ -48,6 +49,7 @@ function SigninButton(sb_props: any) {
             if (ds.size == 1) {
                 const user = ds.docs[0].data();
                 if (user.password == u_password) {
+                    AsyncStorage.setItem('email', u_email.toLowerCase());
                     sb_props.Sb_stack.navigate('Home');
                 } else {
                     Alert.alert('Error', 'Invalid Password');
@@ -131,6 +133,14 @@ function BottomSection(bs_props: any) {
 const LoginScreen = (ls_props: any) => {
 
     const stack = ls_props.navigation;
+
+    useEffect(() => {
+        AsyncStorage.getItem('email').then(email => {
+            if (email) {
+                stack.navigate('Home');
+            }
+        });
+    }, []);
 
     return (
         <View style={sty.container}>
