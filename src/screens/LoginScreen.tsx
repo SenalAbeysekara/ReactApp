@@ -20,7 +20,7 @@ function LoginField(lf_props: any) {
                 borderRadius: 20, marginHorizontal: 20,
                 justifyContent: 'center', paddingLeft: 20, marginTop: 120
             }}>
-                <TextInput placeholder="Email" placeholderTextColor="#000" style={{ color: 'black', fontFamily: 'Poppins-Medium' }} onChangeText={(v) => setEmail(v)} />
+                <TextInput placeholder="Email" placeholderTextColor="#aaa" style={{ color: 'black', fontFamily: 'Poppins-Medium' }} onChangeText={(v) => setEmail(v)} />
             </View>
 
             <View style={{
@@ -28,7 +28,7 @@ function LoginField(lf_props: any) {
                 borderRadius: 20, marginHorizontal: 20,
                 justifyContent: 'center', paddingLeft: 20, marginTop: 10
             }}>
-                <TextInput placeholder="Password" placeholderTextColor="#000" style={{ color: 'black', fontFamily: 'Poppins-Medium' }} onChangeText={(v) => setPassword(v)} secureTextEntry={true} />
+                <TextInput placeholder="Password" placeholderTextColor="#aaa" style={{ color: 'black', fontFamily: 'Poppins-Medium' }} onChangeText={(v) => setPassword(v)} secureTextEntry={true} />
             </View>
             <SigninButton email={email} password={password} Sb_stack={stack} />
             <BottomSection bs_stack={stack} />
